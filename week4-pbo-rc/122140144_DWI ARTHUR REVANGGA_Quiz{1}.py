@@ -12,6 +12,9 @@ def print_board(board):
     for row in board:
         print(' '.join(row))
 
+def count_safe_box(board):
+    return sum(row.count('?') for row in board)
+
 def play_game():
     board = initialize_board()
     print("Let's play Minesweeper!")
@@ -19,6 +22,7 @@ def play_game():
     print_board(board)
     
     bomb_row, bomb_col = place_bomb(board)
+    safe_box = 9
     
     while True:
         row = int(input("Enter row (0-2): "))
@@ -36,8 +40,12 @@ def play_game():
             board[row][col] = 'O'
             print_board(board)
             
-            if all(cell != '?' for row in board for cell in row):
+            safe_box -= 1
+            if safe_box == 0:
+                print("=============================================")
                 print("You win!")
+                board[bomb_row][bomb_col] = 'X'
+                print_board(board)
                 break
 
 play_game()
